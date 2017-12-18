@@ -1,0 +1,6 @@
+framework module Pods_GenAPI_Example {
+  umbrella header "Pods-GenAPI_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'GenAPI_Example' do
+  pod 'GenAPI', :path => '../'
+
+  target 'GenAPI_Tests' do
+    inherit! :search_paths
+    pod 'GenAPI', :path => '../'
+    
+  end
+end
