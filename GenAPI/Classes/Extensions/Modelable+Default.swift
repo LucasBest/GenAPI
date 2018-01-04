@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ObjectDecoder
 
 public typealias DecodableModel = Modelable & Decodable
 
@@ -15,9 +16,9 @@ public extension Modelable where Self:Decodable{
             throw DecodingError.valueNotFound(Self.self, DecodingError.Context.init(codingPath: [], debugDescription: "Nothing to convert."))
         }
         
-        let objectDecoder = ObjectDecoder(referencing:realSomething)
+        let objectDecoder = ObjectDecoder()
         
-        return try self.init(from:objectDecoder)
+        return try objectDecoder.decode(self, from: realSomething)
     }
 }
 

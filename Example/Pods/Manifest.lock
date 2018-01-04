@@ -1,5 +1,7 @@
 PODS:
-  - GenAPI (0.1.0)
+  - GenAPI (0.2.0):
+    - ObjectDecoder
+  - ObjectDecoder (0.1.0)
 
 DEPENDENCIES:
   - GenAPI (from `../`)
@@ -9,7 +11,8 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  GenAPI: 34c0345368da79bec6a216bd410e0bf30540bee7
+  GenAPI: 0866b11cc17bd75f689f400c7af1d9c54442290a
+  ObjectDecoder: c449eda3402007e66c2812eebe98b31b60f63bf1
 
 PODFILE CHECKSUM: d4fbcd574676211af9c56e5ca0b393001fac9f5a
 

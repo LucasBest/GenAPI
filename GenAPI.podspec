@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GenAPI'
-  s.version          = '0.1.0'
+  s.version          = '0.2.0'
   s.summary          = 'GenAPI is lightweight, Swift, Generics based library for consuming REST APIs.'
 
 # This description is used to generate tags and improve search results.
@@ -38,5 +38,5 @@ Use GenAPI to easily consume REST API's in a way that takes advantage of Swift G
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+   s.dependency 'ObjectDecoder'
 end

@@ -299,10 +299,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-GenAPI_Example/Pods-GenAPI_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GenAPI/GenAPI.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectDecoder/ObjectDecoder.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GenAPI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectDecoder.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -365,10 +367,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-GenAPI_Tests/Pods-GenAPI_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GenAPI/GenAPI.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectDecoder/ObjectDecoder.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GenAPI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectDecoder.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

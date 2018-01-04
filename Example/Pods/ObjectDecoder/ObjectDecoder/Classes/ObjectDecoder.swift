@@ -1,12 +1,12 @@
 //
 //  ObjectDecoder.swift
 
-//  GenAPI
+//  ObjectDecoder
 //
 //  Created by Lucas Best on 12/5/17.
 //
 
-import UIKit
+//Heavily references: https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/JSONEncoder.swift
 
 // NOTE: This value is implicitly lazy and _must_ be lazy. We're compiled against the latest SDK (w/ ISO8601DateFormatter), but linked against whichever Foundation the user has. ISO8601DateFormatter might not exist, so we better not hit this code path on an older OS.
 @available(OSX 10.12, iOS 10.0, watchOS 3.0, tvOS 10.0, *)
@@ -16,17 +16,69 @@ fileprivate var _iso8601Formatter: ISO8601DateFormatter = {
     return formatter
 }()
 
-internal class ObjectDecoder : Decoder{
-    private(set) var codingPath: [CodingKey]
+public typealias DateDecodingStrategy = JSONDecoder.DateDecodingStrategy
+public typealias DataDecodingStrategy = JSONDecoder.DataDecodingStrategy
+public typealias NonConformingFloatDecodingStrategy = JSONDecoder.NonConformingFloatDecodingStrategy
+
+public class ObjectDecoder{
+    /// The strategy to use in decoding dates. Defaults to `.deferredToDate`.
+    open var dateDecodingStrategy: DateDecodingStrategy = .deferredToDate
     
+    /// The strategy to use in decoding binary data. Defaults to `.base64`.
+    open var dataDecodingStrategy: DataDecodingStrategy = .base64
+    
+    /// The strategy to use in decoding non-conforming numbers. Defaults to `.throw`.
+    open var nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy = .throw
+    
+    /// Contextual user-provided information for use during decoding.
+    open var userInfo: [CodingUserInfoKey : Any] = [:]
+    
+    /// Initializes `self` with default strategies.
+    public init() {}
+    
+    /// Options set on the top-level encoder to pass down the decoding hierarchy.
+    fileprivate struct _Options {
+        let dateDecodingStrategy: DateDecodingStrategy
+        let dataDecodingStrategy: DataDecodingStrategy
+        let nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy
+        let userInfo: [CodingUserInfoKey : Any]
+    }
+    
+    /// The options set on the top-level decoder.
+    fileprivate var options: _Options {
+        return _Options(dateDecodingStrategy: dateDecodingStrategy,
+                        dataDecodingStrategy: dataDecodingStrategy,
+                        nonConformingFloatDecodingStrategy: nonConformingFloatDecodingStrategy,
+                        userInfo: userInfo)
+    }
+    
+    // MARK: - Decoding Values
+   
+    /// - parameter type: The type of the value to decode.
+    /// - parameter object: the structure to decode.
+    /// - returns: A value of the requested type.
+    /// - throws: `DecodingError.dataCorrupted` if values requested from the payload are corrupted.
+    /// - throws: An error if any value throws an error during decoding.
+    open func decode<T : Decodable>(_ type: T.Type, from object: Any) throws -> T {
+        let decoder = _ObjectDecoder(referencing: object, options: self.options)
+        return try T(from: decoder)
+    }
+}
+
+fileprivate class _ObjectDecoder : Decoder{
     var userInfo: [CodingUserInfoKey : Any] = [:]
+    private(set) var codingPath: [CodingKey]
     
     fileprivate var storage: _ObjectDecodingStorage
     
-    init(referencing container: Any, at codingPath: [CodingKey] = []) {
+    /// Options set on the top-level decoder.
+    fileprivate let options: ObjectDecoder._Options
+    
+    init(referencing container: Any, at codingPath: [CodingKey] = [], options:ObjectDecoder._Options) {
         self.storage = _ObjectDecodingStorage()
         self.storage.push(container: container)
         self.codingPath = codingPath
+        self.options = options
     }
     
     /// Performs the given closure with the given key pushed onto the end of the current coding path.
@@ -50,7 +102,7 @@ internal class ObjectDecoder : Decoder{
         }
         
         guard let topContainer = self.storage.topContainer as? [String : Any] else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: [String : Any].self, reality: self.storage.topContainer)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: [String : Any].self, reality: self.storage.topContainer)
         }
         
         let container = _ObjectKeyedDecodingContainer<Key>(referencing: self, wrapping: topContainer)
@@ -65,13 +117,13 @@ internal class ObjectDecoder : Decoder{
         }
         
         guard let topContainer = self.storage.topContainer as? [Any] else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: [Any].self, reality: self.storage.topContainer)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: [Any].self, reality: self.storage.topContainer)
         }
         
         return _ObjectUnkeyedDecodingContainer(referencing: self, wrapping: topContainer)
     }
     
-    func singleValueContainer() throws -> SingleValueDecodingContainer {
+    public func singleValueContainer() throws -> SingleValueDecodingContainer {
         return self
     }
 }
@@ -105,7 +157,7 @@ fileprivate struct _ObjectDecodingStorage {
 fileprivate struct _ObjectKeyedDecodingContainer<K : CodingKey> : KeyedDecodingContainerProtocol {
     typealias Key = K
     
-    private let decoder: ObjectDecoder
+    private let decoder: _ObjectDecoder
     
     /// A reference to the container we're reading from.
     private let container: [String : Any]
@@ -114,7 +166,7 @@ fileprivate struct _ObjectKeyedDecodingContainer<K : CodingKey> : KeyedDecodingC
     private(set) public var codingPath: [CodingKey]
     
     /// Initializes `self` by referencing the given decoder and container.
-    fileprivate init(referencing decoder: ObjectDecoder, wrapping container: [String : Any]) {
+    fileprivate init(referencing decoder: _ObjectDecoder, wrapping container: [String : Any]) {
         self.decoder = decoder
         self.container = container
         self.codingPath = decoder.codingPath
@@ -357,7 +409,7 @@ fileprivate struct _ObjectKeyedDecodingContainer<K : CodingKey> : KeyedDecodingC
             }
             
             guard let dictionary = value as? [String : Any] else {
-                throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: [String : Any].self, reality: value)
+                throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: [String : Any].self, reality: value)
             }
             
             let container = _ObjectKeyedDecodingContainer<NestedKey>(referencing: self.decoder, wrapping: dictionary)
@@ -374,7 +426,7 @@ fileprivate struct _ObjectKeyedDecodingContainer<K : CodingKey> : KeyedDecodingC
             }
             
             guard let array = value as? [Any] else {
-                throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: [Any].self, reality: value)
+                throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: [Any].self, reality: value)
             }
             
             return _ObjectUnkeyedDecodingContainer(referencing: self.decoder, wrapping: array)
@@ -384,7 +436,7 @@ fileprivate struct _ObjectKeyedDecodingContainer<K : CodingKey> : KeyedDecodingC
     private func _superDecoder(forKey key: CodingKey) throws -> Decoder {
         return self.decoder.with(pushedKey: key) {
             let value: Any = self.container[key.stringValue] ?? NSNull()
-            return ObjectDecoder(referencing: value, at: self.decoder.codingPath)
+            return _ObjectDecoder(referencing: value, at: self.decoder.codingPath, options:self.decoder.options)
         }
     }
     
@@ -399,7 +451,7 @@ fileprivate struct _ObjectKeyedDecodingContainer<K : CodingKey> : KeyedDecodingC
 
 fileprivate struct _ObjectUnkeyedDecodingContainer : UnkeyedDecodingContainer {
     
-    private let decoder: ObjectDecoder
+    private let decoder: _ObjectDecoder
     
     private let container: [Any]
     
@@ -407,7 +459,7 @@ fileprivate struct _ObjectUnkeyedDecodingContainer : UnkeyedDecodingContainer {
     
     private(set) public var currentIndex: Int
     
-    fileprivate init(referencing decoder: ObjectDecoder, wrapping container: [Any]) {
+    fileprivate init(referencing decoder: _ObjectDecoder, wrapping container: [Any]) {
         self.decoder = decoder
         self.container = container
         self.codingPath = decoder.codingPath
@@ -678,7 +730,7 @@ fileprivate struct _ObjectUnkeyedDecodingContainer : UnkeyedDecodingContainer {
             }
             
             guard let dictionary = value as? [String : Any] else {
-                throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: [String : Any].self, reality: value)
+                throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: [String : Any].self, reality: value)
             }
             
             self.currentIndex += 1
@@ -703,7 +755,7 @@ fileprivate struct _ObjectUnkeyedDecodingContainer : UnkeyedDecodingContainer {
             }
             
             guard let array = value as? [Any] else {
-                throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: [Any].self, reality: value)
+                throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: [Any].self, reality: value)
             }
             
             self.currentIndex += 1
@@ -721,12 +773,12 @@ fileprivate struct _ObjectUnkeyedDecodingContainer : UnkeyedDecodingContainer {
             
             let value = self.container[self.currentIndex]
             self.currentIndex += 1
-            return ObjectDecoder(referencing: value, at: self.decoder.codingPath)
+            return _ObjectDecoder(referencing: value, at: self.decoder.codingPath, options:self.decoder.options)
         }
     }
 }
 
-extension ObjectDecoder : SingleValueDecodingContainer {
+extension _ObjectDecoder : SingleValueDecodingContainer {
    
     private func expectNonNull<T>(_ type: T.Type) throws {
         guard !self.decodeNil() else {
@@ -814,13 +866,13 @@ extension ObjectDecoder : SingleValueDecodingContainer {
     }
 }
 
-extension ObjectDecoder {
+extension _ObjectDecoder {
     
     fileprivate func unbox(_ value: Any, as type: Bool.Type) throws -> Bool? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         return number.boolValue
@@ -830,12 +882,12 @@ extension ObjectDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         let int = number.intValue
         guard NSNumber(value: int) == number else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed JSON number <\(number)> does not fit in \(type)."))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed number <\(number)> does not fit in \(type)."))
         }
         
         return int
@@ -845,12 +897,12 @@ extension ObjectDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         let int8 = number.int8Value
         guard NSNumber(value: int8) == number else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed JSON number <\(number)> does not fit in \(type)."))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed number <\(number)> does not fit in \(type)."))
         }
         
         return int8
@@ -860,12 +912,12 @@ extension ObjectDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         let int16 = number.int16Value
         guard NSNumber(value: int16) == number else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed JSON number <\(number)> does not fit in \(type)."))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed number <\(number)> does not fit in \(type)."))
         }
         
         return int16
@@ -875,12 +927,12 @@ extension ObjectDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         let int32 = number.int32Value
         guard NSNumber(value: int32) == number else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed JSON number <\(number)> does not fit in \(type)."))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed number <\(number)> does not fit in \(type)."))
         }
         
         return int32
@@ -890,12 +942,12 @@ extension ObjectDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         let int64 = number.int64Value
         guard NSNumber(value: int64) == number else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed JSON number <\(number)> does not fit in \(type)."))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed number <\(number)> does not fit in \(type)."))
         }
         
         return int64
@@ -905,12 +957,12 @@ extension ObjectDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         let uint = number.uintValue
         guard NSNumber(value: uint) == number else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed JSON number <\(number)> does not fit in \(type)."))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed number <\(number)> does not fit in \(type)."))
         }
         
         return uint
@@ -920,12 +972,12 @@ extension ObjectDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         let uint8 = number.uint8Value
         guard NSNumber(value: uint8) == number else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed JSON number <\(number)> does not fit in \(type)."))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed number <\(number)> does not fit in \(type)."))
         }
         
         return uint8
@@ -935,12 +987,12 @@ extension ObjectDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         let uint16 = number.uint16Value
         guard NSNumber(value: uint16) == number else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed JSON number <\(number)> does not fit in \(type)."))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed number <\(number)> does not fit in \(type)."))
         }
         
         return uint16
@@ -950,12 +1002,12 @@ extension ObjectDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         let uint32 = number.uint32Value
         guard NSNumber(value: uint32) == number else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed JSON number <\(number)> does not fit in \(type)."))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed number <\(number)> does not fit in \(type)."))
         }
         
         return uint32
@@ -965,12 +1017,12 @@ extension ObjectDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         let uint64 = number.uint64Value
         guard NSNumber(value: uint64) == number else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed JSON number <\(number)> does not fit in \(type)."))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath, debugDescription: "Parsed number <\(number)> does not fit in \(type)."))
         }
         
         return uint64
@@ -1010,7 +1062,7 @@ extension ObjectDecoder {
             return string.floatValue
         }
         
-        throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+        throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
     }
     
     fileprivate func unbox(_ value: Any, as type: Double.Type) throws -> Double? {
@@ -1037,14 +1089,14 @@ extension ObjectDecoder {
             return string.doubleValue
         }
         
-        throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+        throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
     }
     
     fileprivate func unbox(_ value: Any, as type: String.Type) throws -> String? {
         guard !(value is NSNull) else { return nil }
         
         guard let string = value as? String else {
-            throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+            throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
         }
         
         return string
@@ -1053,7 +1105,7 @@ extension ObjectDecoder {
     fileprivate func unbox(_ value: Any, as type: Date.Type) throws -> Date? {
         guard !(value is NSNull) else { return nil }
         
-        switch Date.FormattingOptions.dateDecodingStrategy {
+        switch self.options.dateDecodingStrategy {
         case .deferredToDate:
             self.storage.push(container: value)
             let date = try Date(from: self)
@@ -1099,7 +1151,7 @@ extension ObjectDecoder {
     fileprivate func unbox(_ value: Any, as type: Data.Type) throws -> Data? {
         guard !(value is NSNull) else { return nil }
         
-        switch Data.FormattingOptions.dataDecodingStrategy {
+        switch self.options.dataDecodingStrategy {
         case .deferredToData:
             self.storage.push(container: value)
             let data = try Data(from: self)
@@ -1108,7 +1160,7 @@ extension ObjectDecoder {
             
         case .base64:
             guard let string = value as? String else {
-                throw DecodingError._objectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
+                throw DecodingError.__ObjectDecoderTypeMismatch(at: self.codingPath, expectation: type, reality: value)
             }
             
             guard let data = Data(base64Encoded: string) else {
@@ -1128,8 +1180,6 @@ extension ObjectDecoder {
     fileprivate func unbox(_ value: Any, as type: Decimal.Type) throws -> Decimal? {
         guard !(value is NSNull) else { return nil }
         
-        // On Darwin we get (value as? Decimal) since JSONSerialization can produce NSDecimalNumber values.
-        // FIXME: Attempt to grab a Decimal value if JSONSerialization on Linux produces one.
         let doubleValue = try self.unbox(value, as: Double.self)!
         return Decimal(doubleValue)
     }
@@ -1199,8 +1249,8 @@ extension DecodingError{
     /// - parameter expectation: The type expected to be encountered.
     /// - parameter reality: The value that was encountered instead of the expected type.
     /// - returns: A `DecodingError` with the appropriate path and debug description.
-    internal static func _objectDecoderTypeMismatch(at path: [CodingKey], expectation: Any.Type, reality: Any) -> DecodingError {
-        let description = "Expected to decode \(expectation) but found \(_objectDecoderTypeDescription(of: reality)) instead."
+    internal static func __ObjectDecoderTypeMismatch(at path: [CodingKey], expectation: Any.Type, reality: Any) -> DecodingError {
+        let description = "Expected to decode \(expectation) but found \(__ObjectDecoderTypeDescription(of: reality)) instead."
         return .typeMismatch(expectation, Context(codingPath: path, debugDescription: description))
     }
     
@@ -1209,7 +1259,7 @@ extension DecodingError{
     /// - parameter value: The value whose type to describe.
     /// - returns: A string describing `value`.
     /// - precondition: `value` is one of the types below.
-    fileprivate static func _objectDecoderTypeDescription(of value: Any) -> String {
+    fileprivate static func __ObjectDecoderTypeDescription(of value: Any) -> String {
         if value is NSNull {
             return "a null value"
         } else if value is NSNumber /* FIXME: If swift-corelibs-foundation isn't updated to use NSNumber, this check will be necessary: || value is Int || value is Double */ {
@@ -1221,7 +1271,7 @@ extension DecodingError{
         } else if value is [String : Any] {
             return "a dictionary"
         } else {
-            // This should never happen -- we somehow have a non-JSON type here.
+            // This should never happen.
             preconditionFailure("Invalid storage type \(type(of: value)).")
         }
     }

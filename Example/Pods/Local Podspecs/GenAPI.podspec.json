@@ -1,7 +1,7 @@
 {
   "name": "GenAPI",
-  "version": "0.1.0",
-  "summary": "GenAPI is lightweight, Swift Generics based library for consuming REST APIs.",
+  "version": "0.2.0",
+  "summary": "GenAPI is lightweight, Swift, Generics based library for consuming REST APIs.",
   "description": "Use GenAPI to easily consume REST API's in a way that takes advantage of Swift Generics.",
   "homepage": "https://github.com/LucasBest/GenAPI",
   "license": {
@@ -13,10 +13,15 @@
   },
   "source": {
     "git": "https://github.com/LucasBest/GenAPI.git",
-    "tag": "0.1.0"
+    "tag": "0.2.0"
   },
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "GenAPI/Classes/**/*"
+  "source_files": "GenAPI/Classes/**/*",
+  "dependencies": {
+    "ObjectDecoder": [
+
+    ]
+  }
 }
