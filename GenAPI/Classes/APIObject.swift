@@ -159,6 +159,26 @@ public extension APIObject{
         }
     }
     
+    public func addQueryItem(_ queryItem:URLQueryItem){
+        var urlComponents = self.urlComponents()
+        
+        var queryItems = urlComponents?.queryItems ?? []
+        queryItems.append(queryItem)
+        urlComponents?.queryItems = queryItems
+        
+        self.request.url = urlComponents?.url
+    }
+    
+    public func addQueryItems(_ queryItems:[URLQueryItem]){
+        var urlComponents = self.urlComponents()
+        
+        var allQueryItems = urlComponents?.queryItems ?? []
+        allQueryItems.append(contentsOf:queryItems)
+        urlComponents?.queryItems = allQueryItems
+        
+        self.request.url = urlComponents?.url
+    }
+    
     private func urlComponents() -> URLComponents?{
         if let realURL = self.request.url{
             return URLComponents(url: realURL, resolvingAgainstBaseURL: true)

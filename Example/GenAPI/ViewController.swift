@@ -35,6 +35,9 @@ class ViewController: UIViewController {
         userAPIObject.baseURL = URL(string:"https://jsonplaceholder.typicode.com")
         userAPIObject.endPoint = "/users/1"
         
+        userAPIObject.addQueryItem(URLQueryItem(name: "test1", value: "query1"))
+        userAPIObject.addQueryItems([URLQueryItem(name: "test2", value: "query2"), URLQueryItem(name: "test3", value: "query3")])
+        
         userAPIObject.debugOptions = .printDetailedTransaction
         
         userAPIObject.get()
