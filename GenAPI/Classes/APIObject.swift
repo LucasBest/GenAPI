@@ -49,7 +49,7 @@ open class APIObject<ResponseType : Modelable, ErrorType: Modelable & LocalizedE
         self.session.data(for: self.request) { (data, response, error) in
             if !self.checkHasError(error, with: response){
                 self.printDetailedResponseInformationIfOptionIsSet(response)
-                self.printDetailedDataInformationIfOptionIsSet(data)
+                self.printDetailedDataInfromationIfOptionIsSet(data)
                 
                 self.decodeData(data, with: response)
             }
@@ -143,7 +143,7 @@ open class APIObject<ResponseType : Modelable, ErrorType: Modelable & LocalizedE
         }
     }
     
-    private func printDetailedDataInformationIfOptionIsSet(_ data:Data?){
+    private func printDetailedDataInfromationIfOptionIsSet(_ data:Data?){
         if self.debugOptions.contains(.printDetailedTransaction){
             if let realData = data{
                 print(String(data:realData, encoding:.utf8) ?? "(No Data)")
@@ -240,8 +240,32 @@ public extension APIObject{
         self.request.setValue(contentType.rawValue, forHTTPHeaderField: "Content-Type")
     }
     
-    public func setJSONBody(_ body:Any, options:JSONSerialization.WritingOptions = []){
-        self.request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: options)
+    //https://gist.github.com/HomerJSimpson/80c95f0424b8e9718a40
+    public func setFormURLEncodedBody(_ form: [String : String], replaceSpaceWithPlus:Bool = false) {
+        var allowedCharacters = CharacterSet.urlQueryAllowed
+        
+        if replaceSpaceWithPlus{
+            allowedCharacters.insert(" ")
+        }
+        
+        let formParameters = form.map { (key, value) -> String in
+            let percentEncodedValue = value.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? value
+            return "\(key)=\(replaceSpaceWithPlus ? percentEncodedValue.replacingOccurrences(of: " ", with: "+") : percentEncodedValue)"
+        }
+        
+        let formString = formParameters.joined(separator: "&")
+        
+        self.request.httpBody = formString.data(using: .utf8)
+        self.setContentType(MIMEType(.application, .formURLEncoded, ["charset" : "utf8"]))
+    }
+    
+    public func setJSONBody<EncodableType: Encodable>(_ body: EncodableType, encoder: JSONEncoder = JSONEncoder()) throws {
+        self.request.httpBody = try encoder.encode(body)
+        self.setContentType(MIMEType(.application, .json))
+    }
+    
+    public func setJSONBody(_ body:Any, options:JSONSerialization.WritingOptions = []) throws{
+        self.request.httpBody = try JSONSerialization.data(withJSONObject: body, options: options)
         self.setContentType(MIMEType(.application, .json))
     }
 }

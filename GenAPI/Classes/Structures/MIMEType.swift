@@ -22,6 +22,7 @@ public enum Type : String{
 
 public enum Subtype : String{
     case css
+    case formURLEncoded = "x-www-form-urlencoded"
     case html
     case javascript
     case jpeg
