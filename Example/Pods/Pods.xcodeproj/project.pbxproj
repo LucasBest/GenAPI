@@ -11,7 +11,7 @@
 		0F5E88D98F5AB26AC77E64329616939F /* Pods-GenAPI_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EB133CEE4315826F6A76A96F7655EF5 /* Pods-GenAPI_Example-dummy.m */; };
 		1398ED41832ABD1BD30544EB49C2092A /* GenAPI-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 44232D3C6E6E2515505A766F2B8434D7 /* GenAPI-dummy.m */; };
 		21F60E666DCDBAE816E62FFEF62143E3 /* Modelable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F0A7355DA751F39694DF113D34D8BE /* Modelable.swift */; };
-		251DA9A7B3CCF4EC705B845ADCFF1960 /* Data+FormattingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17016AAEA6738924D6615CDB1CC0D789 /* Data+FormattingOptions.swift */; };
+		251DA9A7B3CCF4EC705B845ADCFF1960 /* ObjectDecoderStrategyOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17016AAEA6738924D6615CDB1CC0D789 /* ObjectDecoderStrategyOptions.swift */; };
 		26111A51BF5F2072631959C001AC7671 /* DefaultSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8379A7196F21D028FBF225B5593456 /* DefaultSession.swift */; };
 		27085CF1B0871F578A8FB1E0D091C802 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 623231A926A9E5319E510D646FE8F4C7 /* Foundation.framework */; };
 		27ED166DA90A58899A1FBCDE98934EAC /* UIImage+Modelable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9441757CEC458D5F5F60A8C306FA38B6 /* UIImage+Modelable.swift */; };
@@ -33,7 +33,6 @@
 		E837F9520CFDDC728DB8D2E053355A77 /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD2C88EEDE73988AE0042A7952FDE8 /* MIMEType.swift */; };
 		F0EE5996E178123D18B2A0AC0A38AB12 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F07E81E1C8070E05263CCFCCE094229 /* APIError.swift */; };
 		F3434A8441822D74268D5EFBDCA85A80 /* ObjectDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B575DA4FFD1A62447DED60BB7950D38 /* ObjectDecoder.swift */; };
-		FA05B56A064E9F2BBC9535ADBA0F3C13 /* Date+FormattingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177ED30BE663831DCF5B18F67DDFA13D /* Date+FormattingOptions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,8 +82,7 @@
 
 /* Begin PBXFileReference section */
 		0BCA1974539D8BDAD060CA0B9F3A1BFD /* HTTPMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
-		17016AAEA6738924D6615CDB1CC0D789 /* Data+FormattingOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Data+FormattingOptions.swift"; sourceTree = "<group>"; };
-		177ED30BE663831DCF5B18F67DDFA13D /* Date+FormattingOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Date+FormattingOptions.swift"; sourceTree = "<group>"; };
+		17016AAEA6738924D6615CDB1CC0D789 /* ObjectDecoderStrategyOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ObjectDecoderStrategyOptions.swift; sourceTree = "<group>"; };
 		1EB133CEE4315826F6A76A96F7655EF5 /* Pods-GenAPI_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-GenAPI_Example-dummy.m"; sourceTree = "<group>"; };
 		2DAD2C88EEDE73988AE0042A7952FDE8 /* MIMEType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MIMEType.swift; sourceTree = "<group>"; };
 		398223358EA5004B7947C0B307624DBF /* Pods-GenAPI_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-GenAPI_Tests.modulemap"; sourceTree = "<group>"; };
@@ -228,8 +226,7 @@
 		35D17FF840C33B138CC401C111C5144C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				17016AAEA6738924D6615CDB1CC0D789 /* Data+FormattingOptions.swift */,
-				177ED30BE663831DCF5B18F67DDFA13D /* Date+FormattingOptions.swift */,
+				17016AAEA6738924D6615CDB1CC0D789 /* ObjectDecoderStrategyOptions.swift */,
 				709265976EB04DB1FF64C67F3B8A9566 /* HTTPURLResponse+SuccessfulStatus.swift */,
 				4EB599E4766421B23443AC278710C548 /* Modelable+Default.swift */,
 				9441757CEC458D5F5F60A8C306FA38B6 /* UIImage+Modelable.swift */,
@@ -566,8 +563,7 @@
 			files = (
 				F0EE5996E178123D18B2A0AC0A38AB12 /* APIError.swift in Sources */,
 				2A01A0ADE4C3F9E7D3947DEC4A0EE135 /* APIObject.swift in Sources */,
-				251DA9A7B3CCF4EC705B845ADCFF1960 /* Data+FormattingOptions.swift in Sources */,
-				FA05B56A064E9F2BBC9535ADBA0F3C13 /* Date+FormattingOptions.swift in Sources */,
+				251DA9A7B3CCF4EC705B845ADCFF1960 /* ObjectDecoderStrategyOptions.swift in Sources */,
 				26111A51BF5F2072631959C001AC7671 /* DefaultSession.swift in Sources */,
 				1398ED41832ABD1BD30544EB49C2092A /* GenAPI-dummy.m in Sources */,
 				853B8E9FB3F060026DAC216E325ED6E1 /* HTTPMethod.swift in Sources */,

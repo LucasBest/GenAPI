@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ObjectDecoder
 
 public struct DebugOptions : OptionSet{
     public let rawValue:Int
@@ -26,6 +27,10 @@ open class APIObject<ResponseType : Modelable, ErrorType: Modelable & LocalizedE
     public var responseQueue = DispatchQueue.main
     public var session:Session = DefaultSession()
     
+    public var dataDecodingStrategy:DataDecodingStrategy = .base64
+    public var dateDecodingStrategy:DateDecodingStrategy = .deferredToDate
+    public var nonConformingFloatDecodingStrategy:NonConformingFloatDecodingStrategy = .throw
+    
     private var success:(ResponseType) -> ()
     private var failure:(APIError<ErrorType>) -> ()
     
@@ -44,7 +49,7 @@ open class APIObject<ResponseType : Modelable, ErrorType: Modelable & LocalizedE
         self.session.data(for: self.request) { (data, response, error) in
             if !self.checkHasError(error, with: response){
                 self.printDetailedResponseInformationIfOptionIsSet(response)
-                self.printDetailedDataInfromationIfOptionIsSet(data)
+                self.printDetailedDataInformationIfOptionIsSet(data)
                 
                 self.decodeData(data, with: response)
             }
@@ -81,7 +86,14 @@ open class APIObject<ResponseType : Modelable, ErrorType: Modelable & LocalizedE
                 print("Container Object:", container ?? "No Container")
             }
             
+            
             if (response as? HTTPURLResponse)?.successful() ?? true{
+                if ResponseType.self is Decodable{
+                    Data.FormattingOptions.dataDecodingStrategy = self.dataDecodingStrategy
+                    Date.FormattingOptions.dateDecodingStrategy = self.dateDecodingStrategy
+                    Float.FormattingOptions.nonConformingFloatDecodingStrategy = self.nonConformingFloatDecodingStrategy
+                }
+                
                 let responseModel = try ResponseType.toModel(from: container)
                 
                 self.responseQueue.async {
@@ -89,6 +101,12 @@ open class APIObject<ResponseType : Modelable, ErrorType: Modelable & LocalizedE
                 }
             }
             else{
+                if ErrorType.self is Decodable{
+                    Data.FormattingOptions.dataDecodingStrategy = self.dataDecodingStrategy
+                    Date.FormattingOptions.dateDecodingStrategy = self.dateDecodingStrategy
+                    Float.FormattingOptions.nonConformingFloatDecodingStrategy = self.nonConformingFloatDecodingStrategy
+                }
+                
                 let error = try ErrorType.toModel(from: container)
                 
                 self.responseQueue.async {
@@ -125,7 +143,7 @@ open class APIObject<ResponseType : Modelable, ErrorType: Modelable & LocalizedE
         }
     }
     
-    private func printDetailedDataInfromationIfOptionIsSet(_ data:Data?){
+    private func printDetailedDataInformationIfOptionIsSet(_ data:Data?){
         if self.debugOptions.contains(.printDetailedTransaction){
             if let realData = data{
                 print(String(data:realData, encoding:.utf8) ?? "(No Data)")
@@ -222,8 +240,8 @@ public extension APIObject{
         self.request.setValue(contentType.rawValue, forHTTPHeaderField: "Content-Type")
     }
     
-    public func setJSONBody(_ body:Any){
+    public func setJSONBody(_ body:Any, options:JSONSerialization.WritingOptions = []){
+        self.request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: options)
         self.setContentType(MIMEType(.application, .json))
-        self.request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
     }
 }

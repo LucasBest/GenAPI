@@ -9,6 +9,7 @@ import Foundation
 import ObjectDecoder
 
 public typealias DecodableModel = Modelable & Decodable
+public typealias CodableModel = Modelable & Codable
 
 public extension Modelable where Self:Decodable{
     public static func toModel(from something: Any?) throws -> Self {
@@ -17,22 +18,22 @@ public extension Modelable where Self:Decodable{
         }
         
         let objectDecoder = ObjectDecoder()
+        objectDecoder.dataDecodingStrategy = Data.FormattingOptions.dataDecodingStrategy
+        objectDecoder.dateDecodingStrategy = Date.FormattingOptions.dateDecodingStrategy
+        objectDecoder.nonConformingFloatDecodingStrategy = Float.FormattingOptions.nonConformingFloatDecodingStrategy
         
         return try objectDecoder.decode(self, from: realSomething)
     }
 }
 
-extension Array : Modelable{
+extension Array : Modelable where Element : Modelable{
     public static func toModel(from something: Any?) throws -> Array<Element> {
         var modeledArray = self.init()
         
         if let array = something as? Array<Any> {
             for container in array{
-                if let modelableType = Element.self as? Modelable.Type{
-                    if let model = try modelableType.toModel(from:container) as? Element{
-                        modeledArray.append(model)
-                    }
-                }
+                let model = try Element.toModel(from:container)
+                modeledArray.append(model)
             }
         }
         
