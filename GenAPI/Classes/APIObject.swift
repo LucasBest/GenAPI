@@ -18,7 +18,7 @@ public struct DebugOptions : OptionSet{
     public static let printDetailedTransaction = DebugOptions(rawValue:2)
 }
 
-open class APIObject<ResponseType : Modelable, ErrorType: Modelable>{
+open class APIObject<ResponseType : Modelable, ErrorType: Modelable & LocalizedError>{
     public var request = URLRequest(url: URL(fileURLWithPath: ""))
     
     public var debugOptions:DebugOptions = []

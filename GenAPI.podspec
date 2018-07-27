@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GenAPI'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = 'GenAPI is lightweight, Swift, Generics based library for consuming REST APIs.'
 
 # This description is used to generate tags and improve search results.

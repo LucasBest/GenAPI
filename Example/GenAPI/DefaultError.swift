@@ -9,7 +9,7 @@
 import Foundation
 import protocol GenAPI.Modelable
 
-struct DefaultError : Modelable{
+struct DefaultError : Modelable, LocalizedError{
     var code:Int?
     
     static func toModel(from something: Any?) throws -> DefaultError {
@@ -20,5 +20,13 @@ struct DefaultError : Modelable{
         }
         
         return defaultError
+    }
+    
+    var errorDescription: String?{
+        return "An Unknown Error Occured"
+    }
+    
+    var recoverySuggestion: String?{
+        return "Please try again later."
     }
 }
