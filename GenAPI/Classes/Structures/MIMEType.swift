@@ -102,7 +102,13 @@ public struct MIMEType : RawRepresentable{
         self.subtype = subtype
         self.parameters = parameters
         
-        self.rawValue = "\(self.type.rawValue)/\(self.subtype.rawValue); \(MIMEType.parameterString(from:parameters))"
+        var rawValue = "\(self.type.rawValue)/\(self.subtype.rawValue)"
+        
+        if parameters.count > 0{
+            rawValue.append("; \(MIMEType.parameterString(from:parameters))")
+        }
+        
+        self.rawValue = rawValue
     }
     
     // MARK: - Private

@@ -34,7 +34,6 @@ class TestMIMEType: XCTestCase {
         else{
             XCTAssert(false, "MIMEType is nil")
         }
-        
     }
     
     func testTextHTMLWithCharSetWithCrazyWhiteSpace() {
@@ -51,6 +50,15 @@ class TestMIMEType: XCTestCase {
         else{
             XCTAssert(false, "MIMEType is nil")
         }
-        
+    }
+    
+    func testApplicationJSONRawValue(){
+        let mimeType = MIMEType(.application, .json)
+        XCTAssert(mimeType.rawValue == "application/json")
+    }
+    
+    func testTextHTMLWithCharSetRawValue() {
+        let mimeType = MIMEType(.text, .html, ["charset" : "utf8"])
+        XCTAssert(mimeType.rawValue == "text/html; charset=utf8", "MIMEType.rawValue is \(mimeType.rawValue)")
     }
 }
