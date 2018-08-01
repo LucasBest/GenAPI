@@ -88,7 +88,7 @@ open class APIObject<ResponseType : Modelable, ErrorType: Modelable & LocalizedE
             
             
             if (response as? HTTPURLResponse)?.successful() ?? true{
-                if ResponseType.self is Decodable{
+                if ResponseType.self is Decodable.Type{
                     Data.FormattingOptions.dataDecodingStrategy = self.dataDecodingStrategy
                     Date.FormattingOptions.dateDecodingStrategy = self.dateDecodingStrategy
                     Float.FormattingOptions.nonConformingFloatDecodingStrategy = self.nonConformingFloatDecodingStrategy
@@ -101,7 +101,7 @@ open class APIObject<ResponseType : Modelable, ErrorType: Modelable & LocalizedE
                 }
             }
             else{
-                if ErrorType.self is Decodable{
+                if ErrorType.self is Decodable.Type{
                     Data.FormattingOptions.dataDecodingStrategy = self.dataDecodingStrategy
                     Date.FormattingOptions.dateDecodingStrategy = self.dateDecodingStrategy
                     Float.FormattingOptions.nonConformingFloatDecodingStrategy = self.nonConformingFloatDecodingStrategy
