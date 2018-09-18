@@ -54,7 +54,7 @@ The `APIObject` class has many convenience functions to easily manipulate the un
 
 ## Requirements
 
-GenAPI is built with Swift 4 and targets iOS 8 and later.
+GenAPI is built with Swift 4.2 and targets iOS 8 and later.
 
 ## Installation
 
