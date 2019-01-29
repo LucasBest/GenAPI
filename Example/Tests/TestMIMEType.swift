@@ -10,55 +10,55 @@ import XCTest
 import struct GenAPI.MIMEType
 
 class TestMIMEType: XCTestCase {
-    
+
     func testApplicationJSON() {
         let mimeTypeString = "application/json"
-        
-        let mimeType = MIMEType(rawValue:mimeTypeString)
-        
+
+        let mimeType = MIMEType(rawValue: mimeTypeString)
+
         XCTAssert(mimeType?.type == .application, "MIMEType.type is \(mimeType?.type.rawValue ?? "nil")")
         XCTAssert(mimeType?.subtype == .json, "MIMEType.subtype is \(mimeType?.subtype.rawValue ?? "nil")")
     }
-    
+
     func testTextHTMLWithCharSet() {
         let mimeTypeString = "text/html; charset=utf8"
-        
-        let mimeType = MIMEType(rawValue:mimeTypeString)
-        
+
+        let mimeType = MIMEType(rawValue: mimeTypeString)
+
         XCTAssert(mimeType?.type == .text, "MIMEType.type is \(mimeType?.type.rawValue ?? "nil")")
         XCTAssert(mimeType?.subtype == .html, "MIMEType.subtype is \(mimeType?.subtype.rawValue ?? "nil")")
-        
-        if let parameters = mimeType?.parameters{
-            XCTAssert(parameters == ["charset" : "utf8"], "MIMEType.parameters are \(parameters)")
+
+        if let parameters = mimeType?.parameters {
+            XCTAssert(parameters == ["charset": "utf8"], "MIMEType.parameters are \(parameters)")
         }
-        else{
+        else {
             XCTAssert(false, "MIMEType is nil")
         }
     }
-    
+
     func testTextHTMLWithCharSetWithCrazyWhiteSpace() {
         let mimeTypeString = "text/html;       charset  =  utf8    "
-        
-        let mimeType = MIMEType(rawValue:mimeTypeString)
-        
+
+        let mimeType = MIMEType(rawValue: mimeTypeString)
+
         XCTAssert(mimeType?.type == .text, "MIMEType.type is \(mimeType?.type.rawValue ?? "nil")")
         XCTAssert(mimeType?.subtype == .html, "MIMEType.subtype is \(mimeType?.subtype.rawValue ?? "nil")")
-        
-        if let parameters = mimeType?.parameters{
-            XCTAssert(parameters == ["charset" : "utf8"], "MIMEType.parameters are \(parameters)")
+
+        if let parameters = mimeType?.parameters {
+            XCTAssert(parameters == ["charset": "utf8"], "MIMEType.parameters are \(parameters)")
         }
-        else{
+        else {
             XCTAssert(false, "MIMEType is nil")
         }
     }
-    
-    func testApplicationJSONRawValue(){
+
+    func testApplicationJSONRawValue() {
         let mimeType = MIMEType(.application, .json)
         XCTAssert(mimeType.rawValue == "application/json")
     }
-    
+
     func testTextHTMLWithCharSetRawValue() {
-        let mimeType = MIMEType(.text, .html, ["charset" : "utf8"])
+        let mimeType = MIMEType(.text, .html, ["charset": "utf8"])
         XCTAssert(mimeType.rawValue == "text/html; charset=utf8", "MIMEType.rawValue is \(mimeType.rawValue)")
     }
 }

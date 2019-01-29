@@ -8,35 +8,21 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GenAPI'
-  s.version          = '0.2.2.2'
+  s.version          = '0.2.3'
   s.summary          = 'GenAPI is lightweight, Swift, Generics based library for consuming REST APIs.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
 Use GenAPI to easily consume REST API's in a way that takes advantage of Swift Generics.
                        DESC
 
   s.homepage         = 'https://github.com/LucasBest/GenAPI'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Lucas Best' => 'lucas.best.5@gmail.com' }
   s.source           = { :git => 'https://github.com/LucasBest/GenAPI.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'GenAPI/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'GenAPI' => ['GenAPI/Assets/*.png']
-  # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-   s.dependency 'ObjectDecoder'
+  s.dependency 'ObjectDecoder'
 end

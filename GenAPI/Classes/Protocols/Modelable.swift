@@ -7,10 +7,10 @@
 
 import Foundation
 
-public enum ModelingError : Error{
+public enum ModelingError: Error {
     case invalidType
 }
 
-public protocol Modelable{
-    static func toModel(from something:Any?) throws -> Self
+public protocol Modelable {
+    static func toModel(from something: Any?) throws -> Self
 }

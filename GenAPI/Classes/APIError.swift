@@ -7,15 +7,21 @@
 
 import Foundation
 
-public enum APIError<ErrorType : LocalizedError> : LocalizedError{
-    case session(URLResponse?, Error)
-    case parse(Error)
-    case api(ErrorType)
-    case unexpected
-    
-    public var errorDescription: String?{
-        switch self {
-        case .session(_, let error):
+public struct APIError<ErrorType: LocalizedError>: LocalizedError {
+    public enum Category {
+        case session(Error)
+        case parse(Error)
+        case api(ErrorType)
+        case unexpected
+    }
+
+    public let category: Category
+    public let response: URLResponse?
+    public let rawResponseData: Data?
+
+    public var errorDescription: String? {
+        switch self.category {
+        case .session(let error):
             return error.localizedDescription
         case .parse(let error):
             return error.localizedDescription
@@ -25,10 +31,10 @@ public enum APIError<ErrorType : LocalizedError> : LocalizedError{
             return nil
         }
     }
-    
-    public var failureReason: String?{
-        switch self {
-        case .session(_, let error):
+
+    public var failureReason: String? {
+        switch self.category {
+        case .session(let error):
             return (error as NSError).localizedFailureReason
         case .parse(let error):
             return (error as NSError).localizedFailureReason
@@ -38,10 +44,10 @@ public enum APIError<ErrorType : LocalizedError> : LocalizedError{
             return nil
         }
     }
-    
-    public var recoverySuggestion: String?{
-        switch self {
-        case .session(_, let error):
+
+    public var recoverySuggestion: String? {
+        switch self.category {
+        case .session(let error):
             return (error as NSError).localizedRecoverySuggestion
         case .parse(let error):
             return (error as NSError).localizedRecoverySuggestion
@@ -51,10 +57,10 @@ public enum APIError<ErrorType : LocalizedError> : LocalizedError{
             return nil
         }
     }
-    
-    public var helpAnchor: String?{
-        switch self {
-        case .session(_, let error):
+
+    public var helpAnchor: String? {
+        switch self.category {
+        case .session(let error):
             return (error as NSError).helpAnchor
         case .parse(let error):
             return (error as NSError).helpAnchor

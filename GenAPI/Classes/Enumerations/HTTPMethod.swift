@@ -11,7 +11,7 @@ import Foundation
  Source: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods
  */
 
-public enum HTTPMethod : String{
+public enum HTTPMethod: String {
     case connect = "CONNECT"
     case delete = "DELETE"
     case get = "GET"

@@ -8,21 +8,20 @@
 import Foundation
 import ObjectDecoder
 
-internal extension Data{
-    struct FormattingOptions{
+internal extension Data {
+    struct FormattingOptions {
         static var dataDecodingStrategy: DataDecodingStrategy = .base64
     }
 }
 
-internal extension Date{
-    struct FormattingOptions{
+internal extension Date {
+    struct FormattingOptions {
         static var dateDecodingStrategy: DateDecodingStrategy = .deferredToDate
     }
 }
 
-internal extension Float{
-    struct FormattingOptions{
+internal extension Float {
+    struct FormattingOptions {
         static var nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy = .throw
     }
 }
-
