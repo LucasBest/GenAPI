@@ -12,7 +12,7 @@ public typealias DecodableModel = Modelable & Decodable
 public typealias CodableModel = Modelable & Codable
 
 public extension Modelable where Self: Decodable {
-    public static func toModel(from something: Any?) throws -> Self {
+    static func toModel(from something: Any?) throws -> Self {
         guard let realSomething = something else {
             throw DecodingError.valueNotFound(Self.self, DecodingError.Context.init(codingPath: [], debugDescription: "Nothing to convert."))
         }

@@ -52,10 +52,6 @@ An API error is returned if the HTTP status code of the response is determined t
 
 The `APIObject` class has many convenience functions to easily manipulate the underlying `URLRequest`, but the request is also publicly available in case you need to do any custom configuration. Simply access with  `APIObject.request`.
 
-## Requirements
-
-GenAPI is built with Swift 4.2 and targets iOS 8 and later.
-
 ## Installation
 
 GenAPI is available through [CocoaPods](http://cocoapods.org). To install

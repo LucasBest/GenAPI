@@ -152,7 +152,7 @@ open class APIObject<ResponseType: Modelable, ErrorType: Modelable & LocalizedEr
 }
 
 public extension APIObject {
-    public var baseURL: URL? {
+    var baseURL: URL? {
         get {
             return self.request.url?.baseURL
         }
@@ -164,7 +164,7 @@ public extension APIObject {
         }
     }
 
-    public var endPoint: String? {
+    var endPoint: String? {
         get {
             return self.request.url?.path
         }
@@ -176,7 +176,7 @@ public extension APIObject {
         }
     }
 
-    public func addQueryItem(_ queryItem: URLQueryItem) {
+    func addQueryItem(_ queryItem: URLQueryItem) {
         var urlComponents = self.urlComponents()
 
         var queryItems = urlComponents?.queryItems ?? []
@@ -186,7 +186,7 @@ public extension APIObject {
         self.request.url = urlComponents?.url
     }
 
-    public func addQueryItems(_ queryItems: [URLQueryItem]) {
+    func addQueryItems(_ queryItems: [URLQueryItem]) {
         var urlComponents = self.urlComponents()
 
         var allQueryItems = urlComponents?.queryItems ?? []
@@ -206,41 +206,41 @@ public extension APIObject {
 }
 
 public extension APIObject {
-    public func send(method: HTTPMethod) {
+    func send(method: HTTPMethod) {
         self.request.httpMethod = method.rawValue
         self.getData()
     }
 
-    public func create() {
+    func create() {
         self.send(method: .post)
     }
 
-    public func edit() {
+    func edit() {
         self.send(method: .put)
     }
 
-    public func delete() {
+    func delete() {
         self.send(method: .delete)
     }
 
-    public func get() {
+    func get() {
         self.send(method: .get)
     }
 
-    public func modify() {
+    func modify() {
         self.send(method: .patch)
     }
 
-    public func accept(contentType: MIMEType) {
+    func accept(contentType: MIMEType) {
         self.request.setValue(contentType.rawValue, forHTTPHeaderField: "Accept")
     }
 
-    public func setContentType(_ contentType: MIMEType) {
+    func setContentType(_ contentType: MIMEType) {
         self.request.setValue(contentType.rawValue, forHTTPHeaderField: "Content-Type")
     }
 
     //https://gist.github.com/HomerJSimpson/80c95f0424b8e9718a40
-    public func setFormURLEncodedBody(_ form: [String: String], replaceSpaceWithPlus: Bool = false) {
+    func setFormURLEncodedBody(_ form: [String: String], replaceSpaceWithPlus: Bool = false) {
         var allowedCharacters = CharacterSet.urlQueryAllowed
 
         if replaceSpaceWithPlus {
@@ -258,12 +258,12 @@ public extension APIObject {
         self.setContentType(MIMEType(.application, .formURLEncoded, ["charset": "utf8"]))
     }
 
-    public func setJSONBody<EncodableType: Encodable>(_ body: EncodableType, encoder: JSONEncoder = JSONEncoder()) throws {
+    func setJSONBody<EncodableType: Encodable>(_ body: EncodableType, encoder: JSONEncoder = JSONEncoder()) throws {
         self.request.httpBody = try encoder.encode(body)
         self.setContentType(MIMEType(.application, .json))
     }
 
-    public func setJSONBody(_ body: Any, options: JSONSerialization.WritingOptions = []) throws {
+    func setJSONBody(_ body: Any, options: JSONSerialization.WritingOptions = []) throws {
         self.request.httpBody = try JSONSerialization.data(withJSONObject: body, options: options)
         self.setContentType(MIMEType(.application, .json))
     }
