@@ -19,6 +19,12 @@ public struct APIError<ErrorType: LocalizedError>: LocalizedError {
     public let response: URLResponse?
     public let rawResponseData: Data?
 
+    public init(category: Category, response: URLResponse? = nil, rawResponseData: Data? = nil) {
+        self.category = category
+        self.response = response
+        self.rawResponseData = rawResponseData
+    }
+
     public var errorDescription: String? {
         switch self.category {
         case .session(let error):

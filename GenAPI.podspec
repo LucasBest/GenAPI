@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'GenAPI'
-  s.version          = '0.3.0'
+  s.version          = '0.3.1'
   s.summary          = 'GenAPI is lightweight, Swift, Generics based library for consuming REST APIs.'
 
   s.description      = <<-DESC
