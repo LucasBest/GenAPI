@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension HTTPURLResponse {
+public extension HTTPURLResponse {
     func successful() -> Bool {
         return self.statusCode >= 200 && self.statusCode < 400
     }

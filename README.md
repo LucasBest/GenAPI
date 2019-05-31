@@ -25,7 +25,7 @@ userAPIObject.debugOptions = .printDetailedTransaction
 userAPIObject.get()
 ```
 
-All that is required is that your return types conform to the protocol `Modelable`. However if you already have your models conforming to Apple's new `Decodable` protocol, all you have to do is change the conformance from `Decodable`  to `DecodableModel` and your models will be ready to use with GenAPI.
+All that is required is that your return types conform to the protocol `Modelable`. However if you already have your models conforming to Apple's `Decodable` protocol, all you have to do is change the conformance from `Decodable`  to `DecodableModel` and your models will be ready to use with GenAPI.
 
 ```swift
 struct User : DecodableModel{
