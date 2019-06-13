@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3EF035E6F37C3BBAE21DFE36 /* Pods_GenAPI_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB70F120D5BD8C146C07E4DB /* Pods_GenAPI_Example.framework */; };
+		4AA69B9502F60513B5BE9DBB /* Pods_GenAPI_Watch_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB81FC255F01B3BA6EB2CEA /* Pods_GenAPI_Watch_Extension.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -15,6 +16,17 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		62BE678B0865DD4C8088A2AD /* Pods_GenAPI_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F2E97ABCDFA17A039CC9FD /* Pods_GenAPI_Tests.framework */; };
+		9C54057822B1C3A2000A3BC9 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C54057622B1C3A2000A3BC9 /* Interface.storyboard */; };
+		9C54057A22B1C3A3000A3BC9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C54057922B1C3A3000A3BC9 /* Assets.xcassets */; };
+		9C54058122B1C3A3000A3BC9 /* GenAPI Watch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9C54058022B1C3A3000A3BC9 /* GenAPI Watch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9C54058622B1C3A3000A3BC9 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C54058522B1C3A3000A3BC9 /* InterfaceController.swift */; };
+		9C54058822B1C3A3000A3BC9 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C54058722B1C3A3000A3BC9 /* ExtensionDelegate.swift */; };
+		9C54058A22B1C3A3000A3BC9 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C54058922B1C3A3000A3BC9 /* NotificationController.swift */; };
+		9C54058C22B1C3A3000A3BC9 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C54058B22B1C3A3000A3BC9 /* ComplicationController.swift */; };
+		9C54058E22B1C3A4000A3BC9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C54058D22B1C3A4000A3BC9 /* Assets.xcassets */; };
+		9C54059322B1C3A4000A3BC9 /* GenAPI Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9C54057422B1C3A2000A3BC9 /* GenAPI Watch.app */; };
+		9C5405C622B1CAF6000A3BC9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC449281FE2E25600E65CDD /* User.swift */; };
+		9C5405C722B1CB07000A3BC9 /* DefaultError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC449221FE1BF5900E65CDD /* DefaultError.swift */; };
 		9C7A3B6D1FD99D60006D2BFE /* TestMIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7A3B6C1FD99D60006D2BFE /* TestMIMEType.swift */; };
 		9CC449231FE1BF5900E65CDD /* DefaultError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC449221FE1BF5900E65CDD /* DefaultError.swift */; };
 		9CC449291FE2E25600E65CDD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC449281FE2E25600E65CDD /* User.swift */; };
@@ -28,7 +40,46 @@
 			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
 			remoteInfo = GenAPI;
 		};
+		9C54058222B1C3A3000A3BC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9C54057F22B1C3A3000A3BC9;
+			remoteInfo = "GenAPI Watch Extension";
+		};
+		9C54059122B1C3A4000A3BC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9C54057322B1C3A2000A3BC9;
+			remoteInfo = "GenAPI Watch";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9C54059922B1C3A4000A3BC9 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9C54058122B1C3A3000A3BC9 /* GenAPI Watch Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C54059B22B1C3A4000A3BC9 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				9C54059322B1C3A4000A3BC9 /* GenAPI Watch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		04F2E97ABCDFA17A039CC9FD /* Pods_GenAPI_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GenAPI_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,13 +95,28 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		6685F8CAD7F6B9C390FB2B12 /* Pods-GenAPI_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GenAPI_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-GenAPI_Tests/Pods-GenAPI_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		7F40A24B487BE2F49AA9FF8D /* Pods-GenAPI Watch Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GenAPI Watch Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-GenAPI Watch Extension/Pods-GenAPI Watch Extension.release.xcconfig"; sourceTree = "<group>"; };
 		9C0344A4A1D6490FE4B7A414 /* Pods-GenAPI_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GenAPI_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-GenAPI_Example/Pods-GenAPI_Example.release.xcconfig"; sourceTree = "<group>"; };
+		9C54057422B1C3A2000A3BC9 /* GenAPI Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GenAPI Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C54057722B1C3A2000A3BC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		9C54057922B1C3A3000A3BC9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9C54057B22B1C3A3000A3BC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C54058022B1C3A3000A3BC9 /* GenAPI Watch Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "GenAPI Watch Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C54058522B1C3A3000A3BC9 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		9C54058722B1C3A3000A3BC9 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		9C54058922B1C3A3000A3BC9 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		9C54058B22B1C3A3000A3BC9 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		9C54058D22B1C3A4000A3BC9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9C54058F22B1C3A4000A3BC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C54059022B1C3A4000A3BC9 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		9C7A3B6C1FD99D60006D2BFE /* TestMIMEType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMIMEType.swift; sourceTree = "<group>"; };
 		9CC449221FE1BF5900E65CDD /* DefaultError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultError.swift; sourceTree = "<group>"; };
 		9CC449281FE2E25600E65CDD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		A015124C87243A9FCEB206F4 /* Pods-GenAPI_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GenAPI_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GenAPI_Example/Pods-GenAPI_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		BBB81FC255F01B3BA6EB2CEA /* Pods_GenAPI_Watch_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GenAPI_Watch_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDBC9F6A09B87E67086C4BC0 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C54D37B58A3D830DA3BA8125 /* Pods-GenAPI_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GenAPI_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GenAPI_Tests/Pods-GenAPI_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		CBE5EDBD69FC03F66B64A8E1 /* Pods-GenAPI Watch Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GenAPI Watch Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GenAPI Watch Extension/Pods-GenAPI Watch Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		D8EE496F6E1D67210FB004C7 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		EB70F120D5BD8C146C07E4DB /* Pods_GenAPI_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GenAPI_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -72,6 +138,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9C54057D22B1C3A3000A3BC9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4AA69B9502F60513B5BE9DBB /* Pods_GenAPI_Watch_Extension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A460020AC0D3D82FEC1BD62B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -81,6 +162,8 @@
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for GenAPI */,
 				607FACE81AFB9204008FA782 /* Tests */,
+				9C54057522B1C3A2000A3BC9 /* GenAPI Watch */,
+				9C54058422B1C3A3000A3BC9 /* GenAPI Watch Extension */,
 				607FACD11AFB9204008FA782 /* Products */,
 				D4344F1B892633103D852DDD /* Pods */,
 				B2B2C1AC30CDEA97EC9155E7 /* Frameworks */,
@@ -92,6 +175,8 @@
 			children = (
 				607FACD01AFB9204008FA782 /* GenAPI_Example.app */,
 				607FACE51AFB9204008FA782 /* GenAPI_Tests.xctest */,
+				9C54057422B1C3A2000A3BC9 /* GenAPI Watch.app */,
+				9C54058022B1C3A3000A3BC9 /* GenAPI Watch Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -148,11 +233,36 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		9C54057522B1C3A2000A3BC9 /* GenAPI Watch */ = {
+			isa = PBXGroup;
+			children = (
+				9C54057622B1C3A2000A3BC9 /* Interface.storyboard */,
+				9C54057922B1C3A3000A3BC9 /* Assets.xcassets */,
+				9C54057B22B1C3A3000A3BC9 /* Info.plist */,
+			);
+			path = "GenAPI Watch";
+			sourceTree = "<group>";
+		};
+		9C54058422B1C3A3000A3BC9 /* GenAPI Watch Extension */ = {
+			isa = PBXGroup;
+			children = (
+				9C54058522B1C3A3000A3BC9 /* InterfaceController.swift */,
+				9C54058722B1C3A3000A3BC9 /* ExtensionDelegate.swift */,
+				9C54058922B1C3A3000A3BC9 /* NotificationController.swift */,
+				9C54058B22B1C3A3000A3BC9 /* ComplicationController.swift */,
+				9C54058D22B1C3A4000A3BC9 /* Assets.xcassets */,
+				9C54058F22B1C3A4000A3BC9 /* Info.plist */,
+				9C54059022B1C3A4000A3BC9 /* PushNotificationPayload.apns */,
+			);
+			path = "GenAPI Watch Extension";
+			sourceTree = "<group>";
+		};
 		B2B2C1AC30CDEA97EC9155E7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				EB70F120D5BD8C146C07E4DB /* Pods_GenAPI_Example.framework */,
 				04F2E97ABCDFA17A039CC9FD /* Pods_GenAPI_Tests.framework */,
+				BBB81FC255F01B3BA6EB2CEA /* Pods_GenAPI_Watch_Extension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -164,6 +274,8 @@
 				9C0344A4A1D6490FE4B7A414 /* Pods-GenAPI_Example.release.xcconfig */,
 				C54D37B58A3D830DA3BA8125 /* Pods-GenAPI_Tests.debug.xcconfig */,
 				6685F8CAD7F6B9C390FB2B12 /* Pods-GenAPI_Tests.release.xcconfig */,
+				CBE5EDBD69FC03F66B64A8E1 /* Pods-GenAPI Watch Extension.debug.xcconfig */,
+				7F40A24B487BE2F49AA9FF8D /* Pods-GenAPI Watch Extension.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -181,10 +293,12 @@
 				607FACCE1AFB9204008FA782 /* Resources */,
 				70818C3C9DADA84FACA2CD7A /* [CP] Embed Pods Frameworks */,
 				9CCE86F72200AD4B00984FCF /* SwiftLint */,
+				9C54059B22B1C3A4000A3BC9 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9C54059222B1C3A4000A3BC9 /* PBXTargetDependency */,
 			);
 			name = GenAPI_Example;
 			productName = GenAPI;
@@ -211,13 +325,50 @@
 			productReference = 607FACE51AFB9204008FA782 /* GenAPI_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		9C54057322B1C3A2000A3BC9 /* GenAPI Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C54059A22B1C3A4000A3BC9 /* Build configuration list for PBXNativeTarget "GenAPI Watch" */;
+			buildPhases = (
+				9C54057222B1C3A2000A3BC9 /* Resources */,
+				9C54059922B1C3A4000A3BC9 /* Embed App Extensions */,
+				A460020AC0D3D82FEC1BD62B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9C54058322B1C3A3000A3BC9 /* PBXTargetDependency */,
+			);
+			name = "GenAPI Watch";
+			productName = "GenAPI Watch";
+			productReference = 9C54057422B1C3A2000A3BC9 /* GenAPI Watch.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		9C54057F22B1C3A3000A3BC9 /* GenAPI Watch Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C54059822B1C3A4000A3BC9 /* Build configuration list for PBXNativeTarget "GenAPI Watch Extension" */;
+			buildPhases = (
+				CA5E7073C797EB10D7249170 /* [CP] Check Pods Manifest.lock */,
+				9C54057C22B1C3A3000A3BC9 /* Sources */,
+				9C54057D22B1C3A3000A3BC9 /* Frameworks */,
+				9C54057E22B1C3A3000A3BC9 /* Resources */,
+				504A8EAC005096805DCE346F /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "GenAPI Watch Extension";
+			productName = "GenAPI Watch Extension";
+			productReference = 9C54058022B1C3A3000A3BC9 /* GenAPI Watch Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
@@ -231,6 +382,16 @@
 						DevelopmentTeam = 5ASXU7W52D;
 						LastSwiftMigration = 1020;
 						TestTargetID = 607FACCF1AFB9204008FA782;
+					};
+					9C54057322B1C3A2000A3BC9 = {
+						CreatedOnToolsVersion = 10.2.1;
+						DevelopmentTeam = 5ASXU7W52D;
+						ProvisioningStyle = Automatic;
+					};
+					9C54057F22B1C3A3000A3BC9 = {
+						CreatedOnToolsVersion = 10.2.1;
+						DevelopmentTeam = LX4XZTN676;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -250,6 +411,8 @@
 			targets = (
 				607FACCF1AFB9204008FA782 /* GenAPI_Example */,
 				607FACE41AFB9204008FA782 /* GenAPI_Tests */,
+				9C54057322B1C3A2000A3BC9 /* GenAPI Watch */,
+				9C54057F22B1C3A3000A3BC9 /* GenAPI Watch Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -272,9 +435,50 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9C54057222B1C3A2000A3BC9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C54057A22B1C3A3000A3BC9 /* Assets.xcassets in Resources */,
+				9C54057822B1C3A2000A3BC9 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C54057E22B1C3A3000A3BC9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C54058E22B1C3A4000A3BC9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		504A8EAC005096805DCE346F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GenAPI Watch Extension/Pods-GenAPI Watch Extension-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GenAPI-watchOS/GenAPI.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectDecoder-watchOS/ObjectDecoder.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GenAPI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectDecoder.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GenAPI Watch Extension/Pods-GenAPI Watch Extension-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		58481380CD31EAA09BC3A263 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -300,8 +504,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GenAPI_Example/Pods-GenAPI_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GenAPI/GenAPI.framework",
-				"${BUILT_PRODUCTS_DIR}/ObjectDecoder/ObjectDecoder.framework",
+				"${BUILT_PRODUCTS_DIR}/GenAPI-iOS/GenAPI.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectDecoder-iOS/ObjectDecoder.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -349,6 +553,28 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
+		CA5E7073C797EB10D7249170 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GenAPI Watch Extension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		F71F22867CFF33008A4E29D7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -356,8 +582,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GenAPI_Tests/Pods-GenAPI_Tests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GenAPI/GenAPI.framework",
-				"${BUILT_PRODUCTS_DIR}/ObjectDecoder/ObjectDecoder.framework",
+				"${BUILT_PRODUCTS_DIR}/GenAPI-iOS/GenAPI.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectDecoder-iOS/ObjectDecoder.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -392,6 +618,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9C54057C22B1C3A3000A3BC9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C54058A22B1C3A3000A3BC9 /* NotificationController.swift in Sources */,
+				9C54058C22B1C3A3000A3BC9 /* ComplicationController.swift in Sources */,
+				9C54058822B1C3A3000A3BC9 /* ExtensionDelegate.swift in Sources */,
+				9C5405C622B1CAF6000A3BC9 /* User.swift in Sources */,
+				9C5405C722B1CB07000A3BC9 /* DefaultError.swift in Sources */,
+				9C54058622B1C3A3000A3BC9 /* InterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -399,6 +638,16 @@
 			isa = PBXTargetDependency;
 			target = 607FACCF1AFB9204008FA782 /* GenAPI_Example */;
 			targetProxy = 607FACE61AFB9204008FA782 /* PBXContainerItemProxy */;
+		};
+		9C54058322B1C3A3000A3BC9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9C54057F22B1C3A3000A3BC9 /* GenAPI Watch Extension */;
+			targetProxy = 9C54058222B1C3A3000A3BC9 /* PBXContainerItemProxy */;
+		};
+		9C54059222B1C3A4000A3BC9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9C54057322B1C3A2000A3BC9 /* GenAPI Watch */;
+			targetProxy = 9C54059122B1C3A4000A3BC9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -417,6 +666,14 @@
 				607FACDF1AFB9204008FA782 /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		9C54057622B1C3A2000A3BC9 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C54057722B1C3A2000A3BC9 /* Base */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -595,6 +852,120 @@
 			};
 			name = Release;
 		};
+		9C54059422B1C3A4000A3BC9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 5ASXU7W52D;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				IBSC_MODULE = GenAPI_Watch_Extension;
+				INFOPLIST_FILE = "GenAPI Watch/Info.plist";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.GenAPI-Example.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.2;
+			};
+			name = Debug;
+		};
+		9C54059522B1C3A4000A3BC9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5ASXU7W52D;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				IBSC_MODULE = GenAPI_Watch_Extension;
+				INFOPLIST_FILE = "GenAPI Watch/Info.plist";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.GenAPI-Example.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.2;
+			};
+			name = Release;
+		};
+		9C54059622B1C3A4000A3BC9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CBE5EDBD69FC03F66B64A8E1 /* Pods-GenAPI Watch Extension.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = LX4XZTN676;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "GenAPI Watch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.GenAPI-Example.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.2;
+			};
+			name = Debug;
+		};
+		9C54059722B1C3A4000A3BC9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F40A24B487BE2F49AA9FF8D /* Pods-GenAPI Watch Extension.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LX4XZTN676;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "GenAPI Watch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.GenAPI-Example.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -621,6 +992,24 @@
 			buildConfigurations = (
 				607FACF31AFB9204008FA782 /* Debug */,
 				607FACF41AFB9204008FA782 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9C54059822B1C3A4000A3BC9 /* Build configuration list for PBXNativeTarget "GenAPI Watch Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C54059622B1C3A4000A3BC9 /* Debug */,
+				9C54059722B1C3A4000A3BC9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9C54059A22B1C3A4000A3BC9 /* Build configuration list for PBXNativeTarget "GenAPI Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C54059422B1C3A4000A3BC9 /* Debug */,
+				9C54059522B1C3A4000A3BC9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

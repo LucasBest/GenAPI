@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'GenAPI'
-  s.version          = '0.3.2'
+  s.version          = '0.3.3'
   s.summary          = 'GenAPI is lightweight, Swift, Generics based library for consuming REST APIs.'
 
   s.description      = <<-DESC
@@ -15,6 +15,7 @@ Use GenAPI to easily consume REST API's in a way that takes advantage of Swift G
 
   s.swift_version = '5.0'
   s.ios.deployment_target = '10.0'
+  s.watchos.deployment_target = '2.0'
 
   s.source_files = 'GenAPI/Classes/**/*'
 

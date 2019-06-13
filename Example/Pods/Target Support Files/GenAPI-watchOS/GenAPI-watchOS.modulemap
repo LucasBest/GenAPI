@@ -1,0 +1,6 @@
+framework module GenAPI {
+  umbrella header "GenAPI-watchOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

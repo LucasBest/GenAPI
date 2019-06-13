@@ -1,13 +1,18 @@
-platform:ios, '10.0'
 use_frameworks!
 
 pod 'SwiftLint'
 
 target 'GenAPI_Example' do
+  platform:ios, '10.0'
   pod 'GenAPI', :path => '../'
 
   target 'GenAPI_Tests' do
     inherit! :search_paths
     pod 'GenAPI', :path => '../'
   end
+end
+
+target 'GenAPI Watch Extension' do
+  platform:watchos, '2.0'
+  pod 'GenAPI', :path => '../'
 end
