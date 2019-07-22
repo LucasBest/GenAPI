@@ -17,11 +17,10 @@ class NotificationController: WKUserNotificationInterfaceController {
         // Initialize variables here.
         super.init()
         
-        let userAPIObject = APIObject<User, DefaultError>(success: {(user) in
+        var userAPIObject = APIObject<User, DefaultError>(host: URL(string: "https://jsonplaceholder.typicode.com"), success: {(user) in
             print("From Notification - \(user)")
         }, failure: { (_) in })
 
-        userAPIObject.baseURL = URL(string: "https://jsonplaceholder.typicode.com")
         userAPIObject.endPoint = "/users/1"
 
         userAPIObject.addQueryItem(URLQueryItem(name: "test1", value: "query1"))

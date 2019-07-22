@@ -7,10 +7,9 @@
 //
 
 import Foundation
-import GenAPI
 
-struct User: DecodableModel {
-    struct Company: DecodableModel {
+struct User: Decodable {
+    struct Company: Decodable {
         var name: String
         var catchPhrase: String
     }

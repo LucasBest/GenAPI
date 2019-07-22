@@ -35,7 +35,7 @@ public enum Subtype: String {
     case xml
 }
 
-public struct MIMEType: RawRepresentable {
+public struct MIMEType: RawRepresentable, Hashable {
     public var rawValue: String
 
     public let type: Type
@@ -97,6 +97,14 @@ public struct MIMEType: RawRepresentable {
         }
     }
 
+    public init?(_ responseMIMETypeString: String?) {
+        guard let realString = responseMIMETypeString else {
+            return nil
+        }
+
+        self.init(rawValue: realString)
+    }
+
     public init(_ type: Type, _ subtype: Subtype, _ parameters: [String: String] = [:]) {
         self.type = type
         self.subtype = subtype
@@ -124,4 +132,8 @@ public struct MIMEType: RawRepresentable {
         //Remove last space
         return String(parameterString.dropLast())
     }
+}
+
+public extension MIMEType {
+    static let json = MIMEType(.application, .json)
 }

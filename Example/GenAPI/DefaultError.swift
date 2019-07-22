@@ -7,20 +7,9 @@
 //
 
 import Foundation
-import protocol GenAPI.Modelable
 
-struct DefaultError: Modelable, LocalizedError {
+struct DefaultError: Decodable, LocalizedError {
     var code: Int?
-
-    static func toModel(from something: Any?) throws -> DefaultError {
-        var defaultError = self.init()
-
-        if let dictionary = something as? [String: Any] {
-            defaultError.code = (dictionary["code"] as? NSNumber)?.intValue
-        }
-
-        return defaultError
-    }
 
     var errorDescription: String? {
         return "An Unknown Error Occured"
