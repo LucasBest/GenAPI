@@ -15,7 +15,7 @@ class InterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
-        var userAPIObject = APIObject<User, DefaultError>(host: URL(string: "https://jsonplaceholder.typicode.com"), success: {(user) in
+        let userAPIObject = APIObject<User, DefaultError>(host: URL(string: "https://jsonplaceholder.typicode.com"), success: {(user) in
             print("From Interface - \(user)")
         }, failure: { (_) in })
 

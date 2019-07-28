@@ -25,29 +25,29 @@ userAPIObject.debugOptions = .printDetailedTransaction
 userAPIObject.get()
 ```
 
-All that is required is that your return types conform to the protocol `Modelable`. However if you already have your models conforming to Apple's `Decodable` protocol, all you have to do is change the conformance from `Decodable`  to `Decodable` and your models will be ready to use with GenAPI.
+All that is required is that your return types conform to the protocol `Decodable`.
 
 ```swift
-struct User : Decodable{
-    struct Company : Decodable{
-        var name:String
-        var catchPhrase:String
+struct User: Decodable{
+    struct Company: Decodable{
+        var name: String
+        var catchPhrase: String
     }
 
-    var id:Int
-    var name:String?
-    var company:Company?
+    var id: Int
+    var name: String?
+    var company: Company?
 }
 ```
 
 The  `APIError` enum breaks down any error that occurs into 1 of 3 different possibilities:
 
 - a session error
-- a parsing error
+- a coding error
 - or an API error
 
 A session error is returned if there is an error with the `Session`.<br>
-A parsing error is returned if an error is thrown when trying to decode either the Response type OR the Error type. (The parse error is most commonly a  `DecodingError`.)<br>
+A coding error is returned if an error is thrown when trying to decode either the Response type OR the Error type. (A coding error is most commonly a  `DecodingError`.)<br>
 An API error is returned if the HTTP status code of the response is determined to be outside of the success range.<br>
 
 The `APIObject` class has many convenience functions to easily manipulate the underlying `URLRequest`, but the request is also publicly available in case you need to do any custom configuration. Simply access with  `APIObject.request`.

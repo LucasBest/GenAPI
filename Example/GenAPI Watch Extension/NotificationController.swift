@@ -14,10 +14,9 @@ import GenAPI
 class NotificationController: WKUserNotificationInterfaceController {
 
     override init() {
-        // Initialize variables here.
         super.init()
         
-        var userAPIObject = APIObject<User, DefaultError>(host: URL(string: "https://jsonplaceholder.typicode.com"), success: {(user) in
+        let userAPIObject = APIObject<User, DefaultError>(host: URL(string: "https://jsonplaceholder.typicode.com"), success: {(user) in
             print("From Notification - \(user)")
         }, failure: { (_) in })
 

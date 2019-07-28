@@ -15,9 +15,10 @@ public struct APIObjectConfiguration {
             self.rawValue = rawValue
         }
 
-        public static let printErrorDetails = DebugOptions(rawValue: 1)
-        public static let printDetailedTransaction = DebugOptions(rawValue: 2)
-        public static let printRawDataResponseBody = DebugOptions(rawValue: 3)
+        public static let printDeinitialization = DebugOptions(rawValue: 1)
+        public static let printErrorDetails = DebugOptions(rawValue: 2)
+        public static let printDetailedTransaction = DebugOptions(rawValue: 3)
+        public static let printRawDataResponseBody = DebugOptions(rawValue: 4)
     }
 
     public struct Global {
@@ -39,12 +40,13 @@ public struct APIObjectConfiguration {
     }
 }
 
-public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & LocalizedError> {
+public class APIObject<ResponseType: Decodable, ErrorType: Decodable & LocalizedError> {
     public var request = URLRequest(url: nil)
 
     public var debugOptions: APIObjectConfiguration.DebugOptions = []
 
     public var responseQueue = DispatchQueue.main
+    public var failureQueue = DispatchQueue.main
 
     public var endPoint: String? {
         get {
@@ -58,9 +60,13 @@ public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & Localize
         }
     }
 
+    public var failOnIgnorableError = false
+
+    private let success: (ResponseType) -> ()
+    private let failure: (APIError<ErrorType>) -> ()
+
     private var session: URLSession = URLSession.shared
-    private var success: (ResponseType) -> ()
-    private var failure: (APIError<ErrorType>) -> ()
+    private var task: URLSessionTask?
 
     public init(accept: MIMEType? = APIObjectConfiguration.Global.accept, host: URL? = APIObjectConfiguration.Global.host, session: URLSession? = APIObjectConfiguration.Global.session, success: @escaping(ResponseType) -> (), failure: @escaping(APIError<ErrorType>) -> ()) {
         self.success = success
@@ -77,13 +83,17 @@ public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & Localize
         if let realAccept = accept {
             self.accept(contentType: realAccept)
         }
+    }
 
-        self.debugOptions = self.debugOptions.union(APIObjectConfiguration.Global.debugOptions)
+    deinit {
+        if self.allDebugOptions().contains(.printDeinitialization) {
+            dump(type(of: self), name: "| Deinit called with request: \(self.request)", indent: 3, maxDepth: 0)
+        }
     }
 
     // MARK: - Public
 
-    mutating public func addQueryItem(_ queryItem: URLQueryItem) {
+    public func addQueryItem(_ queryItem: URLQueryItem) {
         var urlComponents = self.urlComponents()
 
         var queryItems = urlComponents?.queryItems ?? []
@@ -93,7 +103,7 @@ public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & Localize
         self.request.url = urlComponents?.url
     }
 
-    mutating public func addQueryItems(_ queryItems: [URLQueryItem]) {
+    public func addQueryItems(_ queryItems: [URLQueryItem]) {
         var urlComponents = self.urlComponents()
 
         var allQueryItems = urlComponents?.queryItems ?? []
@@ -103,21 +113,21 @@ public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & Localize
         self.request.url = urlComponents?.url
     }
 
-    mutating public func send(method: HTTPMethod) {
+    public func send(method: HTTPMethod) {
         self.request.httpMethod = method.rawValue
         self.getData()
     }
 
-    mutating public func accept(contentType: MIMEType) {
+    public func accept(contentType: MIMEType) {
         self.request.setValue(contentType.rawValue, forHTTPHeaderField: "Accept")
     }
 
-    mutating public func setContentType(_ contentType: MIMEType) {
+    public func setContentType(_ contentType: MIMEType) {
         self.request.setValue(contentType.rawValue, forHTTPHeaderField: "Content-Type")
     }
 
     //https://gist.github.com/HomerJSimpson/80c95f0424b8e9718a40
-    mutating public func setFormURLEncodedBody(_ form: [String: String], replaceSpaceWithPlus: Bool = false) {
+    public func setFormURLEncodedBody(_ form: [String: String], replaceSpaceWithPlus: Bool = false) {
         var allowedCharacters = CharacterSet.urlQueryAllowed
 
         if replaceSpaceWithPlus {
@@ -135,8 +145,12 @@ public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & Localize
         self.setContentType(MIMEType(.application, .formURLEncoded, ["charset": "utf8"]))
     }
 
-    mutating public func setBody<EncodableType: Encodable>(_ body: EncodableType, withEncoder encoder: ObjectEncoder) throws {
+    public func setBody<EncodableType: Encodable>(_ body: EncodableType, withEncoder encoder: ObjectEncoder) throws {
         self.request.httpBody = try encoder.encode(body)
+    }
+
+    public func cancel() {
+        self.task?.cancel()
     }
 
     // MARK: - Private
@@ -149,17 +163,20 @@ public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & Localize
 
         self.printDetailedRequestInformationIfOptionIsSet()
 
-        self.session.dataTask(with: self.request) { (data, response, error) in
+        self.task = self.session.dataTask(with: self.request) { (data, response, error) in
             if let realError = error {
-                self.printSessionErrorIfOptionIsSet(realError)
-                self.invokeFailure(APIError(category: .session(realError), response: response, rawResponseData: data))
+                if self.failOnIgnorableError || !realError.canIgnore() {
+                    self.printSessionErrorIfOptionIsSet(realError)
+                    self.invokeFailure(APIError(category: .session(realError), response: response, rawResponseData: data))
+                }
             }
             else {
                 self.printDetailedResponseInformationIfOptionIsSet(response)
                 self.printDetailedDataInformationIfOptionIsSet(data, response)
                 self.processData(data, with: response)
             }
-        }.resume()
+        }
+        self.task?.resume()
     }
 
     private func processData(_ data: Data?, with response: URLResponse?) {
@@ -216,7 +233,7 @@ public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & Localize
     }
 
     private func invokeFailure(_ apiError: APIError<ErrorType>) {
-        self.responseQueue.async {
+        self.failureQueue.async {
             self.failure(apiError)
 
             let errorDetails = APIErrorDetails(decodedResponseData: apiError.rawResponseData,
@@ -249,15 +266,19 @@ public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & Localize
         return (urlResponse as? HTTPURLResponse)?.successful() ?? true
     }
 
+    private func allDebugOptions() -> APIObjectConfiguration.DebugOptions {
+        return self.debugOptions.union(APIObjectConfiguration.Global.debugOptions)
+    }
+
     private func printSessionErrorIfOptionIsSet(_ error: Error) {
-        if  self.debugOptions.contains(.printErrorDetails) ||
-            self.debugOptions.contains(.printDetailedTransaction) {
+        if  self.allDebugOptions().contains(.printErrorDetails) ||
+            self.allDebugOptions().contains(.printDetailedTransaction) {
             dump(error, name: "| Error: Request Failed - Details", indent: 3)
         }
     }
 
     private func printDetailedRequestInformationIfOptionIsSet() {
-        if self.debugOptions.contains(.printDetailedTransaction) {
+        if self.allDebugOptions().contains(.printDetailedTransaction) {
             dump(self.request, name: "| Starting request", indent: 3)
             print("       -------")
             dump(ResponseType.self, name: "Response Type", indent: 5)
@@ -283,28 +304,31 @@ public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & Localize
             debugName = "| Received Error Response"
         }
 
-        if (self.debugOptions.contains(.printErrorDetails) && !responseSuccessful) ||
-            self.debugOptions.contains(.printDetailedTransaction) {
+        let allDebugOptions = self.allDebugOptions()
+
+        if (allDebugOptions.contains(.printErrorDetails) && !responseSuccessful) ||
+            allDebugOptions.contains(.printDetailedTransaction) {
             dump(response, name: debugName, indent: 3, maxDepth: 0)
         }
     }
 
     private func printDetailedDataInformationIfOptionIsSet(_ data: Data?, _ response: URLResponse?) {
-
         let responseFailed = !self.responseSuccessful(response)
 
         if responseFailed {
             print("Error Body:")
         }
 
-        if (self.debugOptions.contains(.printErrorDetails) && responseFailed) ||
-            self.debugOptions.contains(.printDetailedTransaction) {
+        let allDebugOptions = self.allDebugOptions()
+
+        if (allDebugOptions.contains(.printErrorDetails) && responseFailed) ||
+            allDebugOptions.contains(.printDetailedTransaction) {
             print(Utils.bodyStringFromDecodedData(data, urlResponse: response))
         }
     }
 
     private func printDetailedDecodingErrorInformationIfOptionIsSet(_ error: Error, _ data: Data?, _ response: URLResponse?) {
-        if self.debugOptions.contains(.printErrorDetails) {
+        if self.allDebugOptions().contains(.printErrorDetails) {
             dump(self.request, name: "| Decoding Error for request", indent: 3, maxDepth: 0)
             print("       -------")
             dump(error, name: "Error", indent: 5)
@@ -316,32 +340,32 @@ public struct APIObject<ResponseType: Decodable, ErrorType: Decodable & Localize
 }
 
 public extension APIObject {
-    mutating func create() {
+    func create() {
         self.send(method: .post)
     }
 
-    mutating func edit() {
+    func edit() {
         self.send(method: .put)
     }
 
-    mutating func delete() {
+    func delete() {
         self.send(method: .delete)
     }
 
-    mutating func get() {
+    func get() {
         self.send(method: .get)
     }
 
-    mutating func modify() {
+    func modify() {
         self.send(method: .patch)
     }
 
-    mutating func setJSONBody<EncodableType: Encodable>(_ body: EncodableType) throws {
+    func setJSONBody<EncodableType: Encodable>(_ body: EncodableType) throws {
         self.setContentType(.json)
         try self.setBody(body, withEncoder: JSONEncoder())
     }
 
-    mutating func setFailingJSONBody<EncodableType: Encodable>(_ body: EncodableType) {
+    func setFailingJSONBody<EncodableType: Encodable>(_ body: EncodableType) {
         self.setContentType(.json)
         do {
             try self.setBody(body, withEncoder: JSONEncoder())
