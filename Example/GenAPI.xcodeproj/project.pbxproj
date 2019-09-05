@@ -112,6 +112,7 @@
 		9C7A3B6C1FD99D60006D2BFE /* TestMIMEType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMIMEType.swift; sourceTree = "<group>"; };
 		9CC449221FE1BF5900E65CDD /* DefaultError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultError.swift; sourceTree = "<group>"; };
 		9CC449281FE2E25600E65CDD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		9CE908162321878F008B1F4A /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
 		A015124C87243A9FCEB206F4 /* Pods-GenAPI_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GenAPI_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GenAPI_Example/Pods-GenAPI_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		BBB81FC255F01B3BA6EB2CEA /* Pods_GenAPI_Watch_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GenAPI_Watch_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDBC9F6A09B87E67086C4BC0 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -159,6 +160,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				9C987D68232186FE003409E0 /* Swift Package Manager */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for GenAPI */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -255,6 +257,14 @@
 				9C54059022B1C3A4000A3BC9 /* PushNotificationPayload.apns */,
 			);
 			path = "GenAPI Watch Extension";
+			sourceTree = "<group>";
+		};
+		9C987D68232186FE003409E0 /* Swift Package Manager */ = {
+			isa = PBXGroup;
+			children = (
+				9CE908162321878F008B1F4A /* Package.swift */,
+			);
+			name = "Swift Package Manager";
 			sourceTree = "<group>";
 		};
 		B2B2C1AC30CDEA97EC9155E7 /* Frameworks */ = {
