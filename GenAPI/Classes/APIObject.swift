@@ -15,10 +15,10 @@ public struct APIObjectConfiguration {
             self.rawValue = rawValue
         }
 
-        public static let printDeinitialization = DebugOptions(rawValue: 1)
-        public static let printErrorDetails = DebugOptions(rawValue: 2)
-        public static let printDetailedTransaction = DebugOptions(rawValue: 3)
-        public static let printRawDataResponseBody = DebugOptions(rawValue: 4)
+        public static let printDeinitialization = DebugOptions(rawValue: 1 << 0)
+        public static let printErrorDetails = DebugOptions(rawValue: 1 << 1)
+        public static let printDetailedTransaction = DebugOptions(rawValue: 1 << 2)
+        public static let printRawDataResponseBody = DebugOptions(rawValue: 1 << 3)
     }
 
     public struct Global {
@@ -34,7 +34,7 @@ public struct APIObjectConfiguration {
             self.overrideDecoders[mimeType] = decoder
         }
 
-        public static func setCodingErrorType<DecodeErrorType: CodingError>(_ errorType: DecodeErrorType.Type) {
+        public static func setCodingErrorType<DecodeErrorType: CodingError>(_ errorType: DecodeErrorType.Type?) {
             self.codingErrorType = errorType
         }
     }
