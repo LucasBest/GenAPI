@@ -7,7 +7,9 @@
 
 import Foundation
 
-public struct APIObjectConfiguration {
+public class APIObjectConfiguration {
+    public static let shared = APIObjectConfiguration()
+
     public struct DebugOptions: OptionSet {
         public let rawValue: Int
 
@@ -21,23 +23,26 @@ public struct APIObjectConfiguration {
         public static let printRawDataResponseBody = DebugOptions(rawValue: 1 << 3)
     }
 
-    public struct Global {
-        public static var accept: MIMEType?
-        public static var debugOptions: DebugOptions = []
-        public static var host: URL?
-        public static var session: URLSession?
+    public final class Global {
+        public var accept: MIMEType?
+        public var debugOptions: DebugOptions = []
+        public var host: URL?
+        public var session: URLSession?
 
-        static fileprivate var overrideDecoders = [MIMEType: ObjectDecoder]()
-        static fileprivate var codingErrorType: CodingError.Type?
+        fileprivate var overrideDecoders = [MIMEType: ObjectDecoder]()
+        fileprivate var codingErrorType: CodingError.Type?
 
-        public static func setDecoder(_ decoder: ObjectDecoder, forMIMEType mimeType: MIMEType) {
+        public func setDecoder(_ decoder: ObjectDecoder, forMIMEType mimeType: MIMEType) {
             self.overrideDecoders[mimeType] = decoder
         }
 
-        public static func setCodingErrorType<DecodeErrorType: CodingError>(_ errorType: DecodeErrorType.Type?) {
+        public func setCodingErrorType<DecodeErrorType: CodingError>(_ errorType: DecodeErrorType.Type?) {
             self.codingErrorType = errorType
         }
     }
+
+    public var debugOptions: DebugOptions = []
+    public let global = Global()
 }
 
 public class APIObject<ResponseType: Decodable, ErrorType: Decodable & LocalizedError> {
@@ -61,6 +66,7 @@ public class APIObject<ResponseType: Decodable, ErrorType: Decodable & Localized
     }
 
     public var failOnIgnorableError = false
+    public var decoder: ObjectDecoder?
 
     private let success: (ResponseType) -> ()
     private let failure: (APIError<ErrorType>) -> ()
@@ -68,9 +74,11 @@ public class APIObject<ResponseType: Decodable, ErrorType: Decodable & Localized
     private var session: URLSession = URLSession.shared
     private var task: URLSessionTask?
 
-    public init(accept: MIMEType? = APIObjectConfiguration.Global.accept, host: URL? = APIObjectConfiguration.Global.host, session: URLSession? = APIObjectConfiguration.Global.session, success: @escaping(ResponseType) -> (), failure: @escaping(APIError<ErrorType>) -> ()) {
+    public init(accept: MIMEType? = APIObjectConfiguration.shared.global.accept, host: URL? = APIObjectConfiguration.shared.global.host, session: URLSession? = APIObjectConfiguration.shared.global.session, decoder: ObjectDecoder? = nil, success: @escaping(ResponseType) -> (), failure: @escaping(APIError<ErrorType>) -> ()) {
         self.success = success
         self.failure = failure
+
+        self.decoder = decoder
 
         if let realHost = host {
             self.request = URLRequest(url: realHost)
@@ -94,13 +102,7 @@ public class APIObject<ResponseType: Decodable, ErrorType: Decodable & Localized
     // MARK: - Public
 
     public func addQueryItem(_ queryItem: URLQueryItem) {
-        var urlComponents = self.urlComponents()
-
-        var queryItems = urlComponents?.queryItems ?? []
-        queryItems.append(queryItem)
-        urlComponents?.queryItems = queryItems
-
-        self.request.url = urlComponents?.url
+        self.addQueryItems([queryItem])
     }
 
     public func addQueryItems(_ queryItems: [URLQueryItem]) {
@@ -108,6 +110,7 @@ public class APIObject<ResponseType: Decodable, ErrorType: Decodable & Localized
 
         var allQueryItems = urlComponents?.queryItems ?? []
         allQueryItems.append(contentsOf: queryItems)
+
         urlComponents?.queryItems = allQueryItems
 
         self.request.url = urlComponents?.url
@@ -185,7 +188,10 @@ public class APIObject<ResponseType: Decodable, ErrorType: Decodable & Localized
 
             let decoder: ObjectDecoder
 
-            if let realMIMEType = mimeType, let overrideDecoder = APIObjectConfiguration.Global.overrideDecoders[realMIMEType] {
+            if let realDecoder = self.decoder {
+                decoder = realDecoder
+            }
+            else if let realMIMEType = mimeType, let overrideDecoder = APIObjectConfiguration.shared.global.overrideDecoders[realMIMEType] {
                 decoder = overrideDecoder
             }
             else {
@@ -252,7 +258,7 @@ public class APIObject<ResponseType: Decodable, ErrorType: Decodable & Localized
     private func codingErrorFromError(_ error: Error) -> CodingError {
         var codingError: CodingError
 
-        if let globalCodingErrorType = APIObjectConfiguration.Global.codingErrorType {
+        if let globalCodingErrorType = APIObjectConfiguration.shared.global.codingErrorType {
             codingError = globalCodingErrorType.init(underlyingError: error)
         }
         else {
@@ -267,7 +273,7 @@ public class APIObject<ResponseType: Decodable, ErrorType: Decodable & Localized
     }
 
     private func allDebugOptions() -> APIObjectConfiguration.DebugOptions {
-        return self.debugOptions.union(APIObjectConfiguration.Global.debugOptions)
+        return self.debugOptions.union(APIObjectConfiguration.shared.global.debugOptions)
     }
 
     private func printSessionErrorIfOptionIsSet(_ error: Error) {

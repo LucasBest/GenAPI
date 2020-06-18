@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "GenAPI",
     platforms: [
-        .iOS(.v10), .watchOS(.v2),
+        .iOS(.v10), .tvOS(.v10), .watchOS(.v2),
     ], products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(

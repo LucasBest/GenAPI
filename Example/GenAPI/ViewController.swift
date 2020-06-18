@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        APIObjectConfiguration.shared.global.debugOptions = .printDetailedTransaction
+
         NotificationCenter.default.addObserver(forName: .apiObjectError, object: nil, queue: .main) { (notification) in
             if let apiErrorDetails = notification.userInfo?[APIErrorNotificationKey.errorDetails] as? APIErrorDetails {
                 print("Recieved error from notification center: \(apiErrorDetails)")

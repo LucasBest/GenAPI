@@ -9,7 +9,6 @@ import Foundation
 
 internal struct Utils {
     internal static func bodyStringFromDecodedData(_ data: Data?, urlResponse: URLResponse?) -> String {
-        var bodyString = String()
         let noDataString = "(No Body Data)"
 
         if let realDecodedResponseData = data {
