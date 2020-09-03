@@ -101,6 +101,10 @@ public class APIObject<ResponseType: Decodable, ErrorType: Decodable & Localized
 
     // MARK: - Public
 
+    public func setSession(_ session: URLSession) {
+        self.session = session
+    }
+
     public func addQueryItem(_ queryItem: URLQueryItem) {
         self.addQueryItems([queryItem])
     }
@@ -180,6 +184,17 @@ public class APIObject<ResponseType: Decodable, ErrorType: Decodable & Localized
             }
         }
         self.task?.resume()
+    }
+
+    private func downloadData() {
+        guard self.request.url != nil else {
+            self.invokeFailure(APIError(category: .session(APIError<ErrorType>.MissingURLError())))
+            return
+        }
+
+        self.printDetailedRequestInformationIfOptionIsSet()
+
+        self.task = self.session.downloadTask(with: self.request)
     }
 
     private func processData(_ data: Data?, with response: URLResponse?) {
